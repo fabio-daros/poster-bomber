@@ -1,6 +1,4 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux' //connect login from 
-import { login } from '../store/actions/user'
 import {
     View,
     Text,
@@ -9,34 +7,27 @@ import {
     TextInput
 } from 'react-native'
 
-class Login extends Component {
+class Register extends Component {
     state = {
-        name: 'Temporary',
+        name: '',
         email: '',
         password: ''
     }
 
-    login = () => {
-        this.props.onLogin({ ...this.state })
-        this.props.navigation.navigate('Profile')
-    }
     render() {
         return (
             <View style={styles.container}>
+                <TextInput placeholder='Name' style={styles.input}
+                    autoFocus={true} value={this.state.name}
+                    onChangeText={name => this.UNSAFE_componentWillMount.setState({ name })} />
                 <TextInput placeholder='Email' style={styles.input}
-                    autoFocus={true} keyboardType='email-address'
-                    value={this.state.email}
+                    keyboardType='email-address' value={this.state.email}
                     onChangeText={email => this.setState({ email })} />
                 <TextInput placeholder='Password' style={styles.input}
                     secureTextEntry={true} value={this.state.password}
                     onChangeText={password => this.setState({ password })} />
-                <TouchableOpacity onPress={this.login} style={styles.buttom}>
-                    <Text style={styles.buttomText}>Login</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => {
-                    this.props.navigation.navigate('Register')
-                }} style={styles.buttom}>
-                    <Text style={styles.buttomText}>Create new account...</Text>
+                <TouchableOpacity onPress={() => { }} style={styles.buttom}>
+                    <Text style={styles.buttomText}>Save</Text>
                 </TouchableOpacity>
             </View>
         )
@@ -47,7 +38,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
-        justifyContent: 'center',
+        justifyContent: 'center'
     },
     buttom: {
         marginTop: 30,
@@ -56,7 +47,7 @@ const styles = StyleSheet.create({
     },
     buttomText: {
         fontSize: 20,
-        color: '#FFF',
+        color: '#FFF'
     },
     input: {
         marginTop: 20,
@@ -65,16 +56,8 @@ const styles = StyleSheet.create({
         height: 40,
         borderWidth: 1,
         borderColor: '#333',
+        paddingLeft: 15,
     }
 })
 
-const mapDispatchToProps = dispatch => {
-    return {
-        onLogin: user => dispatch(login(user)) //actionCreator(login) parameter(user)
-    }
-}
-
-//export default Login
-
-export default connect(null, mapDispatchToProps)(Login) //connect with redux
-
+export default Register
