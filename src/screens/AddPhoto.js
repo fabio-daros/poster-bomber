@@ -15,6 +15,8 @@ import {
 } from 'react-native'
 import ImagePicker from 'react-native-image-picker' //responsavel por acessar a galeria e a camera.
 
+const noUser = 'Is necessary login to add an image!'
+
 class AddPhoto extends Component {
     state = {
         image: null,
@@ -22,6 +24,11 @@ class AddPhoto extends Component {
     }
 
     pickImage = () => { //metodo para escolher a imagem
+        if (!this.props.name) {
+            Alert.alert('Fail!', noUser)
+            return //return to exit method  
+        }
+
         ImagePicker.showImagePicker({
             title: 'Choice your image',
             maxHeight: 600,
@@ -34,6 +41,11 @@ class AddPhoto extends Component {
     }
 
     save = async () => {
+        if (!this.props.name) {
+            Alert.alert('Fail!', noUser)
+            return //return to exit method 
+        }
+
         this.props.onAddPost({ //call the actionCreator
             id: Math.random(),
             nickname: this.props.name,
@@ -62,6 +74,7 @@ class AddPhoto extends Component {
                     </TouchableOpacity>
                     <TextInput placeholder='Any comment?'
                         style={styles.input} value={this.state.comment}
+                        editable={this.props.name != null} //edition is permited only if LogIn
                         onChangeText={comment => this.setState({ comment })} />
                     <TouchableOpacity onPress={this.save}
                         style={styles.buttom}>

@@ -1,4 +1,4 @@
-import { ADD_POST } from '../actions/actionTypes'
+import { ADD_POST, ADD_COMMENT } from '../actions/actionTypes'
 
 const initialState = {
     posts: [{
@@ -6,18 +6,6 @@ const initialState = {
         nickname: 'Raphael Willow',
         email: 'raphaelwll@hotmail.com',
         image: require('../../../assets/imgs/fence.jpg'),
-        comments: [{
-            nickname: 'John Ray Sheldon',
-            comment: 'Stuning!'
-        }, {
-            nickname: 'Ann Arrow',
-            comment: 'Beautiful image!'
-        }]
-    }, {
-        id: Math.random(),
-        nickname: 'Franz Lima',
-        email: 'flima@gmail.com',
-        image: require('../../../assets/imgs/gate.jpg'),
         comments: [{
             nickname: 'John Ray Sheldon',
             comment: 'Stuning!'
@@ -35,6 +23,21 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 posts: state.posts.concat({
                     ...action.payload
+                })
+            }
+        case ADD_COMMENT:
+            return {
+                ...state,
+                posts: state.posts.map(post => { //map function... create a new array
+                    if (post.id === action.payload.postId) {
+                        if(post.comments) {
+                            post.comments = post.comments.concat(
+                                action.payload.comment
+                            )
+                        } else {
+                            post.comments = [action.payload.comment]
+                        }
+                    }
                 })
             }
         default:

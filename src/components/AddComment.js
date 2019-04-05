@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { addComment } from '../store/actions/posts'
 import {
     View,
     Text,
@@ -16,7 +18,15 @@ class AddComment extends Component {
     }
 
     handleAddComment = () => {
-        Alert.alert('Added!', this.state.comment)
+        this.props.onAddComment({
+            postId: this.props.postId,
+            comment: {
+                nickname: this.props.name,
+                comment: this.state.comment
+            }
+        })
+
+        this.setState[{ comment: '', editMode: false }]
     }
 
     render() {
@@ -27,7 +37,7 @@ class AddComment extends Component {
                     <TextInput placeholder='Ready to comment!...'
                         style={styles.input} autoFocus={true}
                         value={this.state.comment}
-                        onChangeText={comment => this.setState({ comment })} //quando o usuario mudar, automaticamente o estado é mudado...
+                        onChangeText={comment => this.setState({ comment })} //when the user change, automatically the estado é mudado...
                         onSubmitEditing={this.handleAddComment} />
                     <TWF onPress={() => this.setState({ editMode: false })}>
                         <Icon name='times' size={15} color='#555' />
@@ -72,4 +82,18 @@ const styles = StyleSheet.create({
     }
 })
 
-export default AddComment
+//export default AddComment
+
+const mapStateToProps = ({ user }) => {
+    return {
+        name: user.name
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onAddComment: payload => dispatch(addComment(payload))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddComment)// comments in global state of this application.
